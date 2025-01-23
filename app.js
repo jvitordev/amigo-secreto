@@ -40,6 +40,15 @@ function limparCampo(campo) {
     }
 }
 
+function formatarNome(nome) {
+    if (typeof nome !== 'string') return erroParametro(formatarNome.name);
+
+    return nome.trim()
+        .split(" ")
+        .map(palavra => palavra.charAt(0).toUpperCase() + palavra.slice(1))
+        .join(" ");
+}
+
 function formatarTextoDinamico(template, ...values) {
     return template.replace(/\{.*?\}/g, () => values.shift());
 }
@@ -94,11 +103,13 @@ function setListaAmigos(valor) {
 }
 
 function adicionarAmigo() {
-    let campoAmigo = validaCampoForm(document.getElementById('amigo'), 'nome');
-    listaAmigos.push(campoAmigo.value);
+
+    if (campoAmigo) {
+        listaAmigos.push(formatarNome(campoAmigo.value));
 
     limparCampo(campoAmigo);
     exibirListaNaTela(idCampoListaAmigos, listaAmigos);
+    }
 }
 
 function sortearAmigo() {
